@@ -1,3 +1,5 @@
+import datetime
+
 menu = """
 
 [d] Depositar
@@ -9,7 +11,7 @@ menu = """
 
 saldo = float(0)
 limite = float(500)
-extrato = []
+extrato = ""
 numero_saques = 0 
 LIMITE_SAQUES = 3
 
@@ -21,8 +23,10 @@ while True:
         print("Informar o valor de depósito: \n")
         deposito=float(input())
         saldo += deposito
+        data = datetime.datetime.now()
+        data_formatada = data.strftime("%d/%m/%Y, %H:%M:%S")
         f=format(deposito,".2f")
-        extrato.append(f"+ R${f}")
+        extrato +=(f"Data: {data_formatada},  Depósito: + R$ {f}\n")
         print(f"deposito de R$ {f} realizado com sucesso.\n")
         
 
@@ -44,23 +48,26 @@ while True:
 
             else:
                 saldo-=saque
+                data = datetime.datetime.now()
+                data_formatada = data.strftime("%d/%m/%Y, %H:%M:%S")
                 f=format(saque,".2f")
-                extrato.append(f"- R${f}")              
-                print(f"Saque de R$ {f} realizado com sucesso. ")
+                extrato +=(f"Data: {data_formatada},  Saque:    - R$ {f}\n")
                 numero_saques+=1
-
-
+                print(f"saque de R$ {f} realizado com sucesso.\n")
 
     elif opcao=="e":
-        print("Lançamentos: \n")
-        print(extrato)
-        f=format(saldo,".2f")
-        print(f"\n O seu saldo atual é de R$ {f}")
+
+        if extrato=="":
+            print("\n---SEM MOVIMENTAÇÕES---\n")
+
+        else:
+            print("==== LANÇAMENTOS ====\n\n")
+            print(extrato)
+            f=format(saldo,".2f")
+            print(f"\n O seu saldo atual é de R$ {f}")
 
     elif opcao=="q":
         break    
 
     else:
         print("Operação inválida, por favor selecione novamente")
-
-
